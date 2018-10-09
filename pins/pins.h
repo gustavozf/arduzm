@@ -12,7 +12,9 @@ typedef struct{
 
 extern Pin pins[14];
 
-void isOut(uint8_t i);
-void isIn(uint8_t i);
-void addBitPort(uint8_t i);
-void remBitPort(uint8_t i);
+void setOut(uint8_t i);
+void setIn(uint8_t i);
+void setHigh(uint8_t i);
+void setLow(uint8_t i);
+uint8_t getValue(uint8_t i);
+void setPullUp(uint8_t i);

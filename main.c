@@ -1,8 +1,8 @@
 #include "pins/pins.h"
 
 int main(){
-    isOut(10);
+    setOut(10);
 
-    addBitPort(10);
+    setHigh(10);
     while(1);
 }
