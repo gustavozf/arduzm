@@ -1,57 +1,39 @@
+CC = avr-gcc
+CCOBJ = avr-objcopy
+
 # Nome do programa principal
 PROG = main
+EXTEN = c
 
-# Defina uma variável DEPS com a lista das dependências .c (sem a extensão)
-# Exemplo: DEPS = dep1 dep2 dep3
-DEPS = pins/pins uart/uart
+DEP = -C ./uart/uart.c ./pins/pins.c ./led/led.c ./button/button.c
 
 # Porta de comunicação com o Arduino
 PORT = /dev/ttyACM0
 
 # Escolha uma otimização dentre as seguintes:
 # -O0 -O1 -O2 -O3 -Os
-OPTIMIZE = -Os -flto
+OPTIMIZE = -Os
 
 # Configuração para o Arduino UNO
 # -------------------------------
 # Altere apenas se for utilizar outro modelo de Arduino
 # Consulte o arquivo /arduino/avr/boards.txt para outras configurações
 MCU_TARGET = atmega328p
-CPU_FREQ = 16000000
 UPLOAD_SPEED = 115200
 UPLOAD_PROTOCOL = arduino
-
-# Local do arquivo de configuração do avrdude
-AVRDUDE_CONF = /etc/avrdude.conf
 
 # ==========================================
 # Não é necessário alterar as regras abaixo.
 # ==========================================
+main:
+	$(CC) $(OPTIMIZE) -mmcu=atmega328p -DF_CPU=16000000UL -c -o $(PROG).o $(PROG).$(EXTEN)
+	$(CC) $(DEP) -mmcu=atmega328p $(PROG).o -o $(PROG).elf
+	$(CCOBJ) -O ihex -R .eeprom $(PROG).elf $(PROG).hex
 
-OBJS    = $(PROG).o $(DEPS:=.o)
-CC      = avr-gcc
-OBJCOPY = avr-objcopy
-CFLAGS  = $(OPTIMIZE) -I. -g -Wall -mmcu=$(MCU_TARGET) -DF_CPU=$(CPU_FREQ)
-
-.PHONY: all install clean
-
-all: $(PROG).hex
-
-test:
-	@echo $(OBJS)
-
-$(PROG).elf: $(OBJS)
-	$(CC) $(CXXFLAGS) -o $@ $^
-
-$(PROG).hex: $(PROG).elf
-	$(OBJCOPY) -O ihex $< $@
-
-$(PROG).eep.hex: $(PROG).elf
-	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 --no-change-warnings -O ihex $< $@ \
-	|| { echo empty $@ not generated; exit 0; }
-
-install: $(PROG).hex $(PROG).eep.hex
-	avrdude -C $(AVRDUDE_CONF) -p $(MCU_TARGET) -c $(UPLOAD_PROTOCOL) -P $(PORT) -b $(UPLOAD_SPEED) -D -U flash:w:$<:i -U eeprom:w:$(word 2,$^):i
+install:
+	avrdude -V -C /etc/avrdude.conf -p atmega328p -c $(UPLOAD_PROTOCOL) -P $(PORT) -b $(UPLOAD_SPEED) -D -Uflash:w:"$(PROG).hex":i
 
 clean:
-	@rm -f $(PROG).elf $(PROG).eep.hex $(PROG).hex $(OBJS)
+	rm $(PROG).elf
+	rm $(PROG).hex
+	rm $(PROG).o

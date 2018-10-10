@@ -1,8 +1,16 @@
-#include "pins/pins.h"
+#include "./led/led.h"
+#include "./button/button.h"
 
 int main(){
-    setOut(10);
+    uint8_t botao = 10, led = 8;
 
-    setHigh(10);
-    while(1);
+    createLed(led);
+    createButton(botao);
+
+    while(1){
+        getButtonClick(botao);
+        switchStateLed(led);
+        //_delay_ms(150);
+        //waitButtonRelease(botao);
+    }
 }
