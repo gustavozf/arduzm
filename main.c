@@ -8,9 +8,13 @@ int main(){
     createButton(botao);
 
     while(1){
-        getButtonClick(botao);
-        switchStateLed(led);
-        //_delay_ms(150);
-        //waitButtonRelease(botao);
+        if(check_press(botao)){
+            switchStateLed(led);
+
+            waitButtonRelease(botao);
+            switchStateLed(led);
+        }
+        
+        _delay_ms(20);
     }
 }
