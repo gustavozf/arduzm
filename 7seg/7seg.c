@@ -39,7 +39,7 @@ void display7seg(uint8_t num, uint8_t *segd){
 
     for(i=0; i<8; i++){
         // se for necessario acender o segmento
-        if(check_pin(exaNum[num], i+1)){
+        if(checkPin(exaNum[num], i+1)){
             setLow(segd[i]);
         } else {
             setHigh(segd[i]);

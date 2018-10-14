@@ -5,9 +5,9 @@
 #include <util/setbaud.h>
 #include <stdio.h>
 
-static FILE uart_io = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
+static FILE uart_io = FDEV_SETUP_STREAM(uartPutchar, uartGetchar, _FDEV_SETUP_RW);
 
-void uart_init(void) {
+void uartInit(void) {
     UBRR0H = UBRRH_VALUE;
     UBRR0L = UBRRL_VALUE;
 
@@ -24,16 +24,16 @@ void uart_init(void) {
     stdin = &uart_io;
 }
 
-int uart_putchar(char c, FILE *stream) {
+int uartPutchar(char c, FILE *stream) {
     if (c == '\n') {
-        uart_putchar('\r', stream);
+        uartPutchar('\r', stream);
     }
     loop_until_bit_is_set(UCSR0A, UDRE0);
     UDR0 = c;
     return 0;
 }
 
-int uart_getchar(FILE *stream) {
+int uartGetchar(FILE *stream) {
     loop_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
     return UDR0;
 }

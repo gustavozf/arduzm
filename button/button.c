@@ -2,8 +2,8 @@
 #include "../else/util2.h"
 #include "../pins/pins.h"
 
-uint8_t check_press(uint8_t i){
-	return (!check_pin((*pins[i].pin), pins[i].p));
+uint8_t testBit(uint8_t i){
+	return (!checkPin((*pins[i].pin), pins[i].p));
 }
 
 void createButton(uint8_t i){
@@ -11,13 +11,12 @@ void createButton(uint8_t i){
     setPullUp(i);
 }
 
-void getButtonClick(uint8_t i){
-    // Enquanto nao estiver pressionado
-    while(!check_press(i));
+uint8_t getButtonClick(uint8_t i){
+    return testBit(i);
 }
 
 void waitButtonRelease(uint8_t i){
-    while(check_press(i));
+    while(testBit(i));
 }
 
 /*  Nao espera ser solto

@@ -16,7 +16,7 @@ void turnOffLed(uint8_t i){
 }
 
 void switchStateLed(uint8_t i){
-    swt_bit(*(pins[i].port), pins[i].p);
+    swtBit(*(pins[i].port), pins[i].p);
 }
 
 void blinkLed(uint8_t i, uint8_t time){

@@ -1,27 +1,43 @@
 #include "./led/led.h"
 #include "./button/button.h"
-#include "./7seg/7seg.h"
+#include "./ultrasonic/ultrasonic.h"
+#include "./uart/uart.h"
+#include <stdio.h>
 
 int main(){
-    //uint8_t botao = 10, led = 8;
-    uint8_t segm[] = {3,4,6, 8,10,11, 12, 13}, i;
+    uint8_t echo = 8, 
+            trigger = 9, 
+            led = 4, 
+            led2= 3, 
+            button = 10;
+    uint16_t cont;
 
-    //createLed(led);
-    //createButton(botao);
+    uartInit();
 
-    init7segDis(segm);
-
+    createButton(button);
+    createLed(led);
+    createLed(led2);
+    startUltrasonic(echo, trigger);
+    
     while(1){
-        /*if(check_press(botao)){
-            switchStateLed(led);
+        if(getButtonClick(button)){
+            cont = getSonarDistance(echo, trigger);
 
-            waitButtonRelease(botao);
-            switchStateLed(led);
-        }*/
-        
-        for(i=0; i < 16; i++){
-            display7seg(i, segm);
-            _delay_ms(400);
+            printf("Valor em cm: ");
+            printf("%d \n", cont);
+
+            if(cont < 15){
+                turnOnLed(led);
+                turnOffLed(led2);
+            } else {
+                turnOnLed(led2);
+                turnOffLed(led);
+            }
+            
+            waitButtonRelease(button);
+            turnOffLed(led);
+            turnOffLed(led2);
         }
+        
     }
 }

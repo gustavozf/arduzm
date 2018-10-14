@@ -21,20 +21,20 @@ Pin pins[14] = {
 
 // ---------------------------------------- seta o fluxo (entrada/saida)
 void setOut(uint8_t i){
-	add_bit(*(pins[i].ddr), pins[i].p);
+	addBit(*(pins[i].ddr), pins[i].p);
 }
 
 void setIn(uint8_t i){
-	rem_bit(*(pins[i].ddr), pins[i].p);
+	remBit(*(pins[i].ddr), pins[i].p);
 }
 
 // --------------------------------------- seta o valor presente (high/low)
 void setHigh(uint8_t i){
-	add_bit(*(pins[i].port), pins[i].p);
+	addBit(*(pins[i].port), pins[i].p);
 }
 
 void setLow(uint8_t i){
-	rem_bit(*(pins[i].port), pins[i].p);
+	remBit(*(pins[i].port), pins[i].p);
 }
 
 // --------------------------------------- pega o valor presente no pino
@@ -45,10 +45,10 @@ uint8_t getValue(uint8_t i){
 // -------------------------------------- ativa o pull up
 void setPullUp(uint8_t i){
 	// Se for de entrada
-	if(!check_pin(*(pins[i].ddr), pins[i].p)){
+	if(!checkPin(*(pins[i].ddr), pins[i].p)){
 		//*(pins[i].port) = ~(1<<pins[i].p);
 		setHigh(i);
-	} else {
+	} /*else {
 		printf("ERRO: O pino %d nao eh de entrada! Impossivel ativar o pull up.\n", i);
-	}
+	}*/
 }

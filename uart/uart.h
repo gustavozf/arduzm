@@ -9,8 +9,8 @@
 
 #include <stdio.h>
 
-void uart_init(void);
-int uart_putchar(char c, FILE *stream);
-int uart_getchar(FILE *stream);
+void uartInit(void);
+int uartPutchar(char c, FILE *stream);
+int uartGetchar(FILE *stream);
 
 #endif /* UART_H_ */
