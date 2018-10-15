@@ -1,5 +1,6 @@
 #include "led.h"
 #include "../else/util2.h"
+#include "../delay/delay2.h"
 
 
 void createLed(uint8_t i){
@@ -19,8 +20,9 @@ void switchStateLed(uint8_t i){
     swtBit(*(pins[i].port), pins[i].p);
 }
 
-void blinkLed(uint8_t i, uint8_t time){
+void blinkLed(uint8_t i, uint16_t timeMs){
     turnOnLed(i);
-    _delay_ms(150); // LEMBRAR DE MUDAR PELO NOSSO
+    delayMs(timeMs);
     turnOffLed(i);
+    delayMs(timeMs);
 }

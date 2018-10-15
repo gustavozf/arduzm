@@ -1,6 +1,4 @@
-#define F_CPU 16000000UL
-
-#include <util/delay.h>
+#include "../delay/delay2.h"
 #include "../pins/pins.h"
 #include "../button/button.h"
 #include "ultrasonic.h"
@@ -20,7 +18,7 @@ uint16_t getSonarDistance(uint8_t echo, uint8_t trigger){
     uint16_t cont = 0;
 
     setHigh(trigger);
-    _delay_us(10);
+    delayUs(10);
     setLow(trigger);
 
     while(testBit(echo));
