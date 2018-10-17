@@ -31,5 +31,5 @@ void delayOneUs(){
         "    lpm"	"\n"
         "    rjmp 1f"	"\n"
         "1:"	"\n"
-    );
+        );
 }

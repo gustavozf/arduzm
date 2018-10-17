@@ -8,11 +8,16 @@
 #include <stdio.h>
 
 int main(){
-    uint8_t led = 13;
-    
-    createLed(led);
+    uint8_t waver = 11;
+    uint16_t freq;
+
+    uartInit();
+    startPwmWave(waver);
     
     while(1){
-        blinkLed(led, (uint16_t) 2000);
+        printf("\nInsira a nota frequencia: ");
+        scanf("%d", freq);
+        PwmWave(127);
+
     }   
 }

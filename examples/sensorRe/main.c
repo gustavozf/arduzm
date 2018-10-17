@@ -4,6 +4,7 @@
 #include "../../led/led.h"
 #include "../../uart/uart.h"
 #include "../../ultrasonic/ultrasonic.h"
+#include "../../waves/waves.h"
 #include <stdio.h>
 
 int main(){
@@ -26,7 +27,7 @@ int main(){
                 turnOffLed(led[0]);
             }
 
-            delayMs(200);
+            delayMs((uint16_t) 200);
             //waitButtonRelease(botao);
         }
     }   
