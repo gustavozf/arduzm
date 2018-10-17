@@ -15,8 +15,8 @@ void delayUs(uint16_t i){
 
 void delayOneMs(){
     asm volatile (
-        "    ldi  r18, 26"	"\n"
-        "    ldi  r19, 246"	"\n"
+        "    ldi  r18, 21"	"\n"
+        "    ldi  r19, 196"	"\n"
         "1:  dec  r19"	"\n"
         "    brne 1b"	"\n"
         "    dec  r18"	"\n"
@@ -27,8 +27,9 @@ void delayOneMs(){
 
 void delayOneUs(){
     asm volatile (
-        "    ldi  r18, 4"	"\n"
-        "1:  dec  r18"	"\n"
-        "    brne 1b"	"\n"
+        "    lpm"	"\n"
+        "    lpm"	"\n"
+        "    rjmp 1f"	"\n"
+        "1:"	"\n"
     );
 }
