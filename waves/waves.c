@@ -4,9 +4,26 @@
 
 #define fosc 16000000
 
+/*
+wavePins wPins[] = {
+    {&OCR2B, &TCCR2B, COM
+    {&OCR0B, &TCCR0B, COM
+    {&OCR0A, &TCCR0A, COM
+    {&OCR1A, &TCCR1A, COM
+    {&OCR1B, &TCCR1B, COM
+    {&OCR2A, &TCCR2A, COM
+};
+
+3  = 2 B
+5  = 0 B
+6  = 0 A
+9  = 1 A
+10 = 1 B
+11 = 2 A
+*/
+
 uint8_t ativaPrescaler(uint16_t freq){
     uint8_t ret = 1;
-
 
     if(freq < 31250) {
         addBit(TCCR0B, CS01); //prescaler = 8

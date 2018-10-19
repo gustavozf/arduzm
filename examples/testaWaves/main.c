@@ -8,16 +8,16 @@
 #include <stdio.h>
 
 int main(){
-    uint8_t waver = 11;
+    uint8_t waver = 6;
     uint16_t freq;
 
     uartInit();
-    startPwmWave(waver);
+    startCtcWave(waver);
     
     while(1){
-        printf("\nInsira a nota frequencia: ");
-        scanf("%d", freq);
-        ctcWave(127);
+        //printf("\nInsira a nota frequencia: ");
+        //scanf("%d", freq);
+        ctcWave(200);
 
     }   
 }
