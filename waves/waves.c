@@ -44,11 +44,11 @@ void resetTCCR0A(){
     remBit(TCCR0A, COM0A1); 
 }
 
-void PwmWave(uint8_t dutyCycle){
+void pwmWave(uint8_t dutyCycle){
     OCR0A = dutyCycle;
 }
 
-void CtcWave(uint16_t freq){
+void ctcWave(uint16_t freq){
     resetTCCR0B();
     OCR0A = (uint8_t) (fosc/(2*(ativaPrescaler(freq))*freq))-1;
 }

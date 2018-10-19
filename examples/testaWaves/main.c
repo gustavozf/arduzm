@@ -17,7 +17,7 @@ int main(){
     while(1){
         printf("\nInsira a nota frequencia: ");
         scanf("%d", freq);
-        PwmWave(127);
+        ctcWave(127);
 
     }   
 }
