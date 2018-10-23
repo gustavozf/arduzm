@@ -13,6 +13,6 @@ int main(){
     createLed(led);
     
     while(1){
-        blinkLed(led, (uint16_t) 2000);
+        blinkLed(led, (uint8_t) 2000);
     }   
 }

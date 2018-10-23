@@ -12,9 +12,9 @@ typedef struct{
 
 extern Pin pins[14];
 
-void setOut(uint8_t i);
-void setIn(uint8_t i);
-void setHigh(uint8_t i);
-void setLow(uint8_t i);
-uint8_t getValue(uint8_t i);
-void setPullUp(uint8_t i);
+void setOut(uint8_t pin);
+void setIn(uint8_t pin);
+void setHigh(uint8_t pin);
+void setLow(uint8_t pin);
+uint8_t getValue(uint8_t pin);
+void setPullUp(uint8_t pin);

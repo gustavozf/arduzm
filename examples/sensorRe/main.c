@@ -27,7 +27,7 @@ int main(){
                 turnOffLed(led[0]);
             }
 
-            delayMs((uint16_t) 200);
+            delayMs((uint8_t) 200);
             //waitButtonRelease(botao);
         }
     }   

@@ -2,21 +2,21 @@
 #include "../else/util2.h"
 #include "../pins/pins.h"
 
-uint8_t testBit(uint8_t i){
-	return (!checkPin((*pins[i].pin), pins[i].p));
+uint8_t testBit(uint8_t buttonPin){
+	return (!checkPin((*pins[buttonPin].pin), pins[buttonPin].p));
 }
 
-void createButton(uint8_t i){
-    setIn(i);
-    setPullUp(i);
+void createButton(uint8_t buttonPin){
+    setIn(buttonPin);
+    setPullUp(buttonPin);
 }
 
-uint8_t getButtonClick(uint8_t i){
-    return testBit(i);
+uint8_t getButtonClick(uint8_t buttonPin){
+    return testBit(buttonPin);
 }
 
-void waitButtonRelease(uint8_t i){
-    while(testBit(i));
+void waitButtonRelease(uint8_t buttonPin){
+    while(testBit(buttonPin));
 }
 
 /*  Nao espera ser solto

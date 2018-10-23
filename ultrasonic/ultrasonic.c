@@ -18,7 +18,7 @@ uint16_t getSonarDistance(uint8_t echo, uint8_t trigger){
     uint16_t cont = 0;
 
     setHigh(trigger);
-    delayUs(10);
+    delayUs((uint8_t) 10);
     setLow(trigger);
 
     while(testBit(echo));
