@@ -27,7 +27,7 @@ uint8_t ativaPrescaler(uint16_t freq){
 
     if(freq < 31250) {
         addBit(TCCR0B, CS01); //prescaler = 8
-        
+
         ret = (uint8_t) 8;
     }else if(freq < 3906){
         addBit(TCCR0B, CS01); //prescaler = 64
