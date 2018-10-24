@@ -1,6 +1,7 @@
 #include "./button.h"
 #include "../else/util2.h"
 #include "../pins/pins.h"
+#include "../delay/delay2.h"
 
 uint8_t testBit(uint8_t buttonPin){
 	return (!checkPin((*pins[buttonPin].pin), pins[buttonPin].p));
@@ -19,21 +20,34 @@ void waitButtonRelease(uint8_t buttonPin){
     while(testBit(buttonPin));
 }
 
-/*  Nao espera ser solto
-    if(check_press(botao)){
-        switchStateLed(led);
+uint8_t switchMode(uint8_t buttonPin, uint8_t state){
+    uint8_t aux = 0;
+
+    // se tiver sido pressionado
+    if(getButtonClick(buttonPin)){
+        // inverte o estado
+        if (state == ((uint8_t) 0)){
+            aux = (uint8_t) 1;
+        }
+        // retorna
+        return aux;
+    }
+    // senao, retorna o estado como esta
+    return state;
+}
+
+uint8_t holdMode(uint8_t buttonPin, uint8_t state){
+    uint8_t aux = 0;
+
+    if(getButtonClick(buttonPin)){
+        if (state == ((uint8_t) 0)){
+            aux = (uint8_t) 1;
+        }
+
+        waitButtonRelease(buttonPin);
+        delayMs((uint8_t) 20);
+        return aux;
     }
 
-    waitButtonRelease(botao);
-    _delay_ms(20);
-*/
-
-/*  Espera ser solto
-    if(check_press(botao)){
-        switchStateLed(led) 
-        waitButtonRelease(botao);
-        switchStateLed(led);
-    }
-
-    _delay_ms(20);
-*/
+    return state;
+}
