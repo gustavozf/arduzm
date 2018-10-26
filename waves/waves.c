@@ -4,88 +4,114 @@
 
 #define fosc 16000000
 
-/*
-wavePins wPins[] = {
-    {&OCR2B, &TCCR2B, COM
-    {&OCR0B, &TCCR0B, COM
-    {&OCR0A, &TCCR0A, COM
-    {&OCR1A, &TCCR1A, COM
-    {&OCR1B, &TCCR1B, COM
-    {&OCR2A, &TCCR2A, COM
-};
+uint8_t prescalers[3][5] ={
+//  1            8           64          256         1024
+    {0b00000001, 0b00000010, 0b00000011, 0b00000100, 0b00000101}, //TC0
+    {0b00000001, 0b00000010, 0b00000011, 0b00000100, 0b00000101}, //TC1
+    {0b00000001, 0b00000010, 0b00000100, 0b00000110, 0b00000111}, //TC2
+}
 
-3  = 2 B
-5  = 0 B
-6  = 0 A
-9  = 1 A
-10 = 1 B
-11 = 2 A
-*/
+void ativaPrescaler(uint8_t tc, uint8_t pres){
+    uint8_t i, j;
+    uint8_t *cs0, *cs1, *cs2;
 
-uint8_t ativaPrescaler(uint16_t freq){
-    uint8_t ret = 1;
-
-    if(freq < 31250) {
-        addBit(TCCR0B, CS01); //prescaler = 8
-
-        ret = (uint8_t) 8;
-    }else if(freq < 3906){
-        addBit(TCCR0B, CS01); //prescaler = 64
-        addBit(TCCR0B, CS00);
-    
-        ret = (uint8_t) 64;
-    }else if(freq < 488){
-        addBit(TCCR0B, CS02); // prescaler = 256
-    
-        ret = (uint8_t) 256;
-    }else if (freq < 122){
-        addBit(TCCR0B, CS02); // prescaler = 1024
-        addBit(TCCR0B, CS00);
-    
-        ret = (uint8_t) 1024;
+    switch(pres){
+        case 1:    j=0; break;
+        case 8:    j=1; break;
+        case 64:   j=2; break;
+        case 256:  j=3; break;
+        case 1024: j=4; break;
     }
 
-    return ret;
+    /*switch(tc){
+
+    }
+
+    for(i=1; i <= 3; i++){
+        if(checkPin(prescalers[tc][j], i)){
+            addBit()
+        } else {
+            remBit()
+        }
+    }*/
 }
 
-void resetTCCR0B(){
-    remBit(TCCR0B, CS00);
-    remBit(TCCR0B, CS01);
-    remBit(TCCR0B, CS02);
-}
-
-void resetTCCR0A(){
-    remBit(TCCR0A, WGM00);
-    remBit(TCCR0A, WGM01);
-    remBit(TCCR0A, COM0A0);
-    remBit(TCCR0A, COM0A1); 
+uint8_t getPrescaler(uint16_t freq){
+    if(freq < 31250) {
+        return (uint8_t) 8;
+    }else if(freq < 3906){
+        return (uint8_t) 64;
+    }else if(freq < 488){
+        return (uint8_t) 256;
+    }else if (freq < 122){
+        return (uint8_t) 1024;
+    } else {
+        return (uint8_t) 1;
+    }
 }
 
 void pwmWave(uint8_t dutyCycle){
     OCR0A = dutyCycle;
 }
 
-void ctcWave(uint16_t freq){
-    resetTCCR0B();
-    OCR0A = (uint8_t) (fosc/(2*(ativaPrescaler(freq))*freq))-1;
+void ctcWave(uint16_t freq, uint8_t pin){
+    uint8_t presc = getPrescaler(freq);
+    uint8_t num = (uint8_t) (fosc/(2*(presc)*freq))-1;
+
+
+    switch(pin){
+        case 3: //PD3 OC2B
+            ativaPrescaler((uitn8_t) 2);
+            break;
+        case 5: //PD5 OC0B
+            break;
+        case 6: //PD6 OC0A
+            break;
+        case 9: //PB1 OC1A
+            break;
+        case 10: //PB2 OC1B
+            break;
+        case 11: //PB3 OC2A
+            break;
+        default:
+            setHigh(pin);
+    }
 }
 
-void startPwmWave(uint8_t i){
-    setOut(i);
+void startPwmWave(uint8_t pin){
+    setOut(pin);
 
-    if((i == 3) || (i == 5) || (i == 6) || (i == 9) ||  (i == 10) || (i==11)){
+    switch(pin){
+        case 3: //PD3 OC2B
+            addBit(TCCR2B, WGM20);
+            addBit(TTCR2B, WGM21);  // Ativa o modo Fast PWM
+            addBit(TCCR2B, COM2B1);
 
-        resetTCCR0A();
-        resetTCCR0B();
+            addBit(TCCR2B, CS21);
+            break;
 
-        addBit(TCCR0A, WGM00);
-        addBit(TCCR0A, WGM01); // Ativa o modo Fast PWM
-        addBit(TCCR0A, COM0A1); // Configura o modo Fast PWM como padrão não-invertido
-        addBit(TCCR0B, CS01); // Configura prescaler = 8;
+        case 5: //PD5 OC0B
+            break;
 
-    } else {
-        setHigh(i);
+        case 6: //PD6 OC0A
+            break;
+
+        case 9: //PB1 OC1A
+            break;
+
+        case 10: //PB2 OC1B
+            break;
+
+        case 11: //PB3 OC2A
+            break;
+
+        default:
+            setHigh(pin);
     }
+
+
+ // Configura o modo Fast PWM como padrão não-invertido
+ // Configura prescaler = 8;
 }
 
 
@@ -93,8 +119,7 @@ void startCtcWave(uint8_t i){
     setOut(i);
 
     if((i == 3) || (i == 5) || (i == 6) || (i == 9) || (i == 10) || (i==11)){
-        resetTCCR0A();
-
+        
         addBit(TCCR0A, WGM01); // Ativa o modo CTC
         addBit(TCCR0A, COM0A0); // Configura o modo CTC = OCR0A
 

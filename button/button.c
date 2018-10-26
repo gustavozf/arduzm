@@ -29,6 +29,7 @@ uint8_t switchMode(uint8_t buttonPin, uint8_t state){
         if (state == ((uint8_t) 0)){
             aux = (uint8_t) 1;
         }
+        delayMs((uint8_t) 20);
         // retorna
         return aux;
     }
@@ -46,6 +47,7 @@ uint8_t holdMode(uint8_t buttonPin, uint8_t state){
 
         waitButtonRelease(buttonPin);
         delayMs((uint8_t) 20);
+
         return aux;
     }
 
