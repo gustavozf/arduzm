@@ -8,16 +8,18 @@
 #include <stdio.h>
 
 int main(){
-    uint8_t segm[] = {4, 5, 6, 8, 9, 10, 11, 12};
-    uint8_t botao = 13, state = 0, i = 0;
+    uint8_t segm[] = {4, 5, 6, 7, 8, 9, 10, 11};
+    uint8_t botao = 12, state = 0, i = 0;
 
     init7segDis(segm);
     createButton(botao);
-    display7seg(i, segm);
+    uartInit();
+    display7seg(0, segm);
 
     while(1){
         if(state = switchMode(botao, state)){
-            i = (i+1)%16;
+            i = (uint8_t) (i+1)%16;
+            printf("%d\n", i);
             display7seg(i, segm);
             state = 0;
             delayMs((uint8_t) 200);
