@@ -9,9 +9,9 @@ uint8_t prescalers[3][5] ={
     {0b00000001, 0b00000010, 0b00000011, 0b00000100, 0b00000101}, //TC0
     {0b00000001, 0b00000010, 0b00000011, 0b00000100, 0b00000101}, //TC1
     {0b00000001, 0b00000010, 0b00000100, 0b00000110, 0b00000111}, //TC2
-}
+};
 
-void ativaPrescaler(uint8_t tc, uint8_t pres){
+void ativaPrescaler(uint8_t tc, uint16_t pres){
     uint8_t i, j;
     uint8_t *cs0, *cs1, *cs2;
 
@@ -61,7 +61,7 @@ void ctcWave(uint16_t freq, uint8_t pin){
 
     switch(pin){
         case 3: //PD3 OC2B
-            ativaPrescaler((uitn8_t) 2);
+            ativaPrescaler((uint8_t) 2, pin);
             break;
         case 5: //PD5 OC0B
             break;
@@ -84,7 +84,7 @@ void startPwmWave(uint8_t pin){
     switch(pin){
         case 3: //PD3 OC2B
             addBit(TCCR2B, WGM20);
-            addBit(TTCR2B, WGM21);  // Ativa o modo Fast PWM
+            addBit(TCCR2B, WGM21);  // Ativa o modo Fast PWM
             addBit(TCCR2B, COM2B1);
 
             addBit(TCCR2B, CS21);
