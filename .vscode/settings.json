@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "util2.h": "c",
-        "pins.h": "c"
+        "pins.h": "c",
+        "7seg.h": "c",
+        "waves.h": "c"
     }
 }

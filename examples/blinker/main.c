@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 int main(){
-    uint8_t led = 13;
+    uint8_t led = 6;
     
     createLed(led);
     

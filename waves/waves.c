@@ -50,14 +50,9 @@ uint8_t getPrescaler(uint16_t freq){
     }
 }
 
-void pwmWave(uint8_t dutyCycle){
-    OCR0A = dutyCycle;
-}
-
 void ctcWave(uint16_t freq, uint8_t pin){
     uint8_t presc = getPrescaler(freq);
     uint8_t num = (uint8_t) (fosc/(2*(presc)*freq))-1;
-
 
     switch(pin){
         case 3: //PD3 OC2B
@@ -78,40 +73,93 @@ void ctcWave(uint16_t freq, uint8_t pin){
     }
 }
 
+void pwmWave(uint8_t dutyCycle, uint8_t pin){
+
+    switch(pin){
+        case 3: //PD3 OC2B
+            OCR2B = dutyCycle;
+            break;
+        case 5: //PD5 OC0B
+            OCR0B = dutyCycle;
+            break;
+        case 6: //PD6 OC0A
+            OCR0A = dutyCycle;
+            break;
+        case 9: //PB1 OC1A
+            OCR1A = dutyCycle;
+            break;
+        case 10: //PB2 OC1B
+            OCR1B = dutyCycle;
+            break;
+        case 11: //PB3 OC2A
+            OCR2A = dutyCycle;;
+            break;
+        default:
+            setHigh(pin);
+    }
+}
+
 void startPwmWave(uint8_t pin){
     setOut(pin);
 
     switch(pin){
-        case 3: //PD3 OC2B
-            addBit(TCCR2B, WGM20);
-            addBit(TCCR2B, WGM21);  // Ativa o modo Fast PWM
-            addBit(TCCR2B, COM2B1);
+        case 3: //PD3 OC2B TC2
+            addBit(TCCR2A, WGM20);
+            addBit(TCCR2A, WGM21);  // Ativa o modo Fast PWM
+            addBit(TCCR2A, COM2B1); // Configura o modo Fast PWM como padrão não-invertido
+            remBit(TCCR2A, COM2B0);
 
-            addBit(TCCR2B, CS21);
+            addBit(TCCR2B, CS21);   // prescaler fixo = 8
             break;
 
-        case 5: //PD5 OC0B
+        case 5: //PD5 OC0B TC0
+            addBit(TCCR0A, WGM00);
+            addBit(TCCR0A, WGM01);  // Ativa o modo Fast PWM
+            addBit(TCCR0A, COM0B1); // Configura o modo Fast PWM como padrão não-invertido
+            remBit(TCCR0A, COM0B0);
+
+            addBit(TCCR0B, CS01);   // prescaler fixo = 8
             break;
 
-        case 6: //PD6 OC0A
+        case 6: //PD6 OC0A TC0
+            addBit(TCCR0A, WGM00);
+            addBit(TCCR0A, WGM01);  // Ativa o modo Fast PWM
+            addBit(TCCR0A, COM0A1); // Configura o modo Fast PWM como padrão não-invertido
+            remBit(TCCR0A, COM0A0);
+
+            addBit(TCCR0B, CS01);   // prescaler fixo = 8
             break;
 
-        case 9: //PB1 OC1A
+        case 9: //PB1 OC1A TC1
+            addBit(TCCR1A, WGM10);
+            addBit(TCCR1A, WGM11);  // Ativa o modo Fast PWM
+            addBit(TCCR1A, COM1A1); // Configura o modo Fast PWM como padrão não-invertido
+            remBit(TCCR1A, COM1A0);
+
+            addBit(TCCR1B, CS11);   // prescaler fixo = 8
             break;
 
-        case 10: //PB2 OC1B
+        case 10: //PB2 OC1B TC1
+            addBit(TCCR1A, WGM10);
+            addBit(TCCR1A, WGM11);  // Ativa o modo Fast PWM
+            addBit(TCCR1A, COM1B1); // Configura o modo Fast PWM como padrão não-invertido
+            remBit(TCCR1A, COM1B0);
+
+            addBit(TCCR1B, CS11);   // prescaler fixo = 8
             break;
 
-        case 11: //PB3 OC2A
+        case 11: //PB3 OC2A TC2
+            addBit(TCCR2A, WGM20);
+            addBit(TCCR2A, WGM21);  // Ativa o modo Fast PWM
+            addBit(TCCR2A, COM2A1); // Configura o modo Fast PWM como padrão não-invertido
+            remBit(TCCR2A, COM2A0);
+
+            addBit(TCCR2B, CS21);   // prescaler fixo = 8
             break;
 
         default:
             setHigh(pin);
     }
-
-
- // Configura o modo Fast PWM como padrão não-invertido
- // Configura prescaler = 8;
 }
 
 
@@ -127,8 +175,6 @@ void startCtcWave(uint8_t i){
         setHigh(i);
     }
 }
-
-
 
 /* 
 

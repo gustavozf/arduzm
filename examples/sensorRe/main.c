@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 int main(){
-    uint8_t led[] = {8, 9};
+    uint8_t led[] = {6, 7};
     uint8_t botao = 10;
     uint8_t trigger = 11, echo = 12;
 

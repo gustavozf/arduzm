@@ -2,7 +2,7 @@ CC = avr-gcc
 CCOBJ = avr-objcopy
 
 # Nome do programa principal
-PROG = ./examples/7segmen/main
+PROG = ./examples/testaWaves/main
 EXTEN = c
 
 DEP = -C ./uart/uart.c ./pins/pins.c ./led/led.c ./button/button.c ./7seg/7seg.c ./ultrasonic/ultrasonic.c ./delay/delay2.c ./waves/waves.c

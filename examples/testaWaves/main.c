@@ -9,15 +9,10 @@
 
 int main(){
     uint8_t waver = 6;
-    uint16_t freq;
 
-    uartInit();
-    startCtcWave(waver);
+    startPwmWave(waver);
     
     while(1){
-        //printf("\nInsira a nota frequencia: ");
-        //scanf("%d", freq);
-        ctcWave(200, waver);
-
+        pwmWave(127, waver);
     }   
 }
